@@ -396,10 +396,6 @@ interface Ethernet8
 interface Loopback0
    ip address 172.16.13.1/32
 !
-interface Vlan3
-   description <User`s VLAN>
-   ip address 192.168.3.1/24
-!
 interface Vlan10
    description <User`s VLAN10>
 !
