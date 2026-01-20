@@ -157,16 +157,19 @@ router bgp 65550
    timers bgp 1 3
    distance bgp 20 200 200
    maximum-paths 2 ecmp 2
+   bgp listen range 172.16.0.0/16 peer-group EVPN peer-filter LEAFS_ASN
    bgp listen range 10.0.0.0/8 peer-group LEAF peer-filter LEAFS_ASN
+   neighbor EVPN peer group
+   neighbor EVPN update-source Loopback0
+   neighbor EVPN ebgp-multihop 3
+   neighbor EVPN send-community extended
    neighbor LEAF peer group
    neighbor LEAF out-delay 0
    neighbor LEAF bfd
-   neighbor LEAF password 7 Wo42e/MSAGKzhGqxiFbmFQ==
-   neighbor LEAF send-community extended
+   neighbor LEAF password 7 CFF54tD4K3HqNxXFU7fUvg==
    !
    address-family evpn
-      neighbor LEAF activate
-      neighbor LEAF next-hop-unchanged
+      neighbor EVPN activate
    !
    address-family ipv4
       neighbor LEAF activate
@@ -214,16 +217,19 @@ router bgp 65550
    timers bgp 1 3
    distance bgp 20 200 200
    maximum-paths 2 ecmp 2
+   bgp listen range 172.16.0.0/16 peer-group EVPN peer-filter LEAFS_ASN
    bgp listen range 10.0.0.0/8 peer-group LEAF peer-filter LEAFS_ASN
+   neighbor EVPN peer group
+   neighbor EVPN update-source Loopback0
+   neighbor EVPN ebgp-multihop 3
+   neighbor EVPN send-community extended
    neighbor LEAF peer group
    neighbor LEAF out-delay 0
    neighbor LEAF bfd
-   neighbor LEAF password 7 Wo42e/MSAGKzhGqxiFbmFQ==
-   neighbor LEAF send-community extended
+   neighbor LEAF password 7 CFF54tD4K3HqNxXFU7fUvg==
    !
    address-family evpn
-      neighbor LEAF activate
-      neighbor LEAF next-hop-unchanged
+      neighbor EVPN activate
    !
    address-family ipv4
       neighbor LEAF activate
@@ -271,6 +277,7 @@ interface Vxlan1
    vxlan source-interface Loopback0
    vxlan udp-port 4789
    vxlan vlan 10 vni 10010
+   vxlan learn-restrict any
 !
 ip routing
 !
@@ -280,14 +287,20 @@ router bgp 65501
    timers bgp 1 3
    distance bgp 20 200 200
    maximum-paths 2 ecmp 2
+   neighbor EVPN peer group
+   neighbor EVPN remote-as 65550
+   neighbor EVPN update-source Loopback0
+   neighbor EVPN ebgp-multihop 3
+   neighbor EVPN send-community extended
    neighbor SPINE peer group
    neighbor SPINE remote-as 65550
    neighbor SPINE out-delay 0
    neighbor SPINE bfd
-   neighbor SPINE password 7 bIFMJWqYLxH5gDSFoq95VA==
-   neighbor SPINE send-community extended
+   neighbor SPINE password 7 TELv/X/TsJAOPeWXSZ/FGA==
    neighbor 10.1.1.1 peer group SPINE
    neighbor 10.2.1.1 peer group SPINE
+   neighbor 172.16.1.1 peer group EVPN
+   neighbor 172.16.2.1 peer group EVPN
    !
    vlan 10
       rd auto
@@ -295,7 +308,7 @@ router bgp 65501
       redistribute learned
    !
    address-family evpn
-      neighbor SPINE activate
+      neighbor EVPN activate
    !
    address-family ipv4
       neighbor SPINE activate
@@ -341,6 +354,7 @@ interface Vxlan1
    vxlan source-interface Loopback0
    vxlan udp-port 4789
    vxlan vlan 20 vni 10020
+   vxlan learn-restrict any
 !
 ip routing
 !
@@ -350,14 +364,20 @@ router bgp 65502
    timers bgp 1 3
    distance bgp 20 200 200
    maximum-paths 2 ecmp 2
+   neighbor EVPN peer group
+   neighbor EVPN remote-as 65550
+   neighbor EVPN update-source Loopback0
+   neighbor EVPN ebgp-multihop 3
+   neighbor EVPN send-community extended
    neighbor SPINE peer group
    neighbor SPINE remote-as 65550
    neighbor SPINE out-delay 0
    neighbor SPINE bfd
-   neighbor SPINE password 7 bIFMJWqYLxH5gDSFoq95VA==
-   neighbor SPINE send-community extended
+   neighbor SPINE password 7 TELv/X/TsJAOPeWXSZ/FGA==
    neighbor 10.1.2.1 peer group SPINE
    neighbor 10.2.2.1 peer group SPINE
+   neighbor 172.16.1.1 peer group EVPN
+   neighbor 172.16.2.1 peer group EVPN
    !
    vlan 20
       rd auto
@@ -365,7 +385,7 @@ router bgp 65502
       redistribute learned
    !
    address-family evpn
-      neighbor SPINE activate
+      neighbor EVPN activate
    !
    address-family ipv4
       neighbor SPINE activate
@@ -423,6 +443,7 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 10 vni 10010
    vxlan vlan 20 vni 10020
+   vxlan learn-restrict any
 !
 ip routing
 !
@@ -432,14 +453,20 @@ router bgp 65503
    timers bgp 1 3
    distance bgp 20 200 200
    maximum-paths 2 ecmp 2
+   neighbor EVPN peer group
+   neighbor EVPN remote-as 65550
+   neighbor EVPN update-source Loopback0
+   neighbor EVPN ebgp-multihop 3
+   neighbor EVPN send-community extended
    neighbor SPINE peer group
    neighbor SPINE remote-as 65550
    neighbor SPINE out-delay 0
    neighbor SPINE bfd
-   neighbor SPINE password 7 bIFMJWqYLxH5gDSFoq95VA==
-   neighbor SPINE send-community extended
+   neighbor SPINE password 7 TELv/X/TsJAOPeWXSZ/FGA==
    neighbor 10.1.3.1 peer group SPINE
    neighbor 10.2.3.1 peer group SPINE
+   neighbor 172.16.1.1 peer group EVPN
+   neighbor 172.16.2.1 peer group EVPN
    !
    vlan 10
       rd auto
@@ -452,7 +479,7 @@ router bgp 65503
       redistribute learned
    !
    address-family evpn
-      neighbor SPINE activate
+      neighbor EVPN activate
    !
    address-family ipv4
       neighbor SPINE activate
